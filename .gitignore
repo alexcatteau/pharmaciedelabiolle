@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Dossiers système
+Thumbs.db
+desktop.ini
+
+# Fichiers de dev local
+*.log
+*.tmp
+/tmp/
+
+# Fichier de test — ne pas publier
+test_js.html
+
+# Design system (source interne, pas nécessaire en prod)
+pharmacie-de-la-biolle-design-system/
+
+# Serveur local Claude
+.claude/serve.py

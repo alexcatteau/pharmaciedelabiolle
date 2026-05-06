@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Pharmacie de La Biolle — Site statique",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/tmp/serve_biolle.py"],
+      "port": 3000
+    }
+  ]
+}

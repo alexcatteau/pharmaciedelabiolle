@@ -1211,6 +1211,96 @@ footer {
 }
 
 
+/* ════════════════════════════════════════════
+   SÉLECTION DU MOIS
+   ════════════════════════════════════════════ */
+.selection-section {
+  background: var(--cream-100);
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 3.5rem);
+  border-bottom: 1px solid var(--cream-200);
+}
+.selection-inner {
+  max-width: 1000px; margin: 0 auto;
+}
+.selection-header {
+  display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2rem;
+}
+.selection-month-tag {
+  font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: 600;
+  color: var(--biolle-teal-700); background: var(--biolle-teal-100);
+  padding: 3px 12px; border-radius: var(--radius-pill);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.selection-card {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; align-items: center;
+  background: var(--paper); border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md); overflow: hidden;
+}
+/* Colonne gauche — aperçu PDF */
+.selection-pdf-wrap {
+  position: relative; background: var(--cream-50);
+  height: 480px; overflow: hidden;
+}
+.selection-pdf-wrap object {
+  width: 100%; height: 100%; border: none; display: block;
+}
+.selection-pdf-fallback {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; gap: 1rem; color: var(--fg-tertiary);
+  font-size: var(--fs-sm); text-align: center; padding: 2rem;
+}
+.selection-pdf-fallback svg { opacity: 0.35; }
+/* Colonne droite — infos produit */
+.selection-info {
+  padding: 2.5rem 2.5rem 2.5rem 0.5rem;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.selection-brand {
+  font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--biolle-teal-600);
+}
+.selection-product {
+  font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700; line-height: 1.1; color: var(--biolle-teal-900);
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.selection-product span { color: var(--biolle-teal-600); }
+.selection-desc {
+  font-size: var(--fs-sm); color: var(--fg-secondary);
+  line-height: var(--lh-loose); max-width: 340px;
+}
+.selection-promo-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--terracotta-100); color: var(--terracotta-600);
+  border: 1px solid rgba(184,92,60,0.2);
+  font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: var(--radius-pill);
+  align-self: flex-start;
+}
+.selection-promo-badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--terracotta-600);
+  animation: dot-live 2s ease-in-out infinite;
+}
+.selection-cta {
+  display: inline-flex; align-items: center; gap: 9px;
+  align-self: flex-start; margin-top: 0.5rem;
+  font-size: var(--fs-sm);
+}
+.selection-note {
+  font-size: var(--fs-xs); color: var(--fg-tertiary);
+  margin-top: -0.25rem;
+}
+/* Responsive */
+@media (max-width: 720px) {
+  .selection-card { grid-template-columns: 1fr; }
+  .selection-pdf-wrap { height: 320px; }
+  .selection-info { padding: 1.5rem; }
+}
+
 /* Marquee header */
 .marquee-header {
   text-align: center;
@@ -2062,6 +2152,50 @@ footer {
         </div>
 
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SÉLECTION DU MOIS ===== -->
+<section id="selection-mois" class="selection-section" aria-label="Sélection du mois">
+  <div class="selection-inner">
+
+    <div class="selection-header">
+      <span class="eyebrow">Sélection du mois</span>
+      <!-- CHANGER CHAQUE MOIS : mettez à jour le mois ici -->
+      <span class="selection-month-tag">Mai 2026</span>
+    </div>
+
+    <div class="selection-card reveal">
+
+      <!-- Colonne gauche : aperçu du PDF -->
+      <div class="selection-pdf-wrap">
+        <!-- Le fichier promos/promo-du-mois.pdf est remplacé chaque mois -->
+        <object data="promos/promo-du-mois.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit" type="application/pdf">
+          <div class="selection-pdf-fallback">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            <p>Aperçu non disponible<br/>sur ce navigateur</p>
+          </div>
+        </object>
+      </div>
+
+      <!-- Colonne droite : informations produit -->
+      <div class="selection-info">
+        <!-- CHANGER CHAQUE MOIS : marque, nom produit, description -->
+        <span class="selection-brand">Mustela</span>
+        <h3 class="selection-product">Gel Lavant Doux <span>500 ml</span></h3>
+        <p class="selection-desc">Nettoyant corps et cheveux ultra-doux, conçu pour la peau fragile des bébés dès la naissance. Sans parabens, sans phénoxyéthanol.</p>
+
+        <span class="selection-promo-badge">Offre du mois</span>
+
+        <a href="promos/promo-du-mois.pdf" target="_blank" rel="noopener" class="btn-primary selection-cta">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Voir la promotion
+        </a>
+
+        <p class="selection-note">Disponible en pharmacie · Renseignez-vous au comptoir</p>
+      </div>
+
     </div>
   </div>
 </section>

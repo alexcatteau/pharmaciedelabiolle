@@ -1301,18 +1301,6 @@ footer {
   .selection-info { padding: 1.5rem; }
 }
 
-/* ── Bouton FINDRISC nav ── */
-.btn-nav-findrisc {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--biolle-teal-700); color: #fff;
-  font-family: var(--font-ui); font-size: 10px; font-weight: 300;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 8px 16px; border-radius: var(--radius-pill);
-  border: none; cursor: pointer; white-space: nowrap; flex-shrink: 0;
-  transition: background var(--dur-base) var(--ease-out), transform var(--dur-fast);
-}
-.btn-nav-findrisc:hover { background: var(--biolle-teal-800); transform: scale(1.03); }
-
 /* ════════════════════════════════════════════
    MODAL FINDRISC — Test risque diabète type 2
    ════════════════════════════════════════════ */
@@ -2109,7 +2097,6 @@ footer {
     <a href="#infos">Horaires</a>
     <a href="#avis">Avis</a>
     <button class="btn-nav-voyage" id="btn-open-voyage" onclick="openVoyage()">✈ Préparer mon voyage</button>
-    <button class="btn-nav-findrisc" onclick="openFINDRISC()" title="Évaluer votre risque de diabète de type 2">🩺 FINDRISC</button>
     <button class="btn-epidemies-map" onclick="EPI.open()" aria-label="Épidémies et qualité de l'air — Savoie" title="Santé publique · Savoie">
       <svg id="epi-header-svg" class="epi-header-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
         <!-- Forme chargée dynamiquement par JS — vide avant chargement -->

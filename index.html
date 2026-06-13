@@ -1063,6 +1063,125 @@ footer {
 }
 .catalogue-cta-text { font-size: 0.85rem; color: var(--fg-secondary); line-height: 1.55; }
 
+/* ═══ ENCART « RETOUR À DOMICILE » (hero) ═══ */
+.mad-encart {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+  width: 100%; text-align: left; cursor: pointer;
+  background: linear-gradient(155deg, var(--teal) 0%, var(--teal-deep, #1f5a4c) 100%);
+  color: #fff; border: none; border-radius: var(--radius-xl, 22px);
+  padding: 2rem 2rem 1.75rem; position: relative; overflow: hidden;
+  box-shadow: 0 24px 60px -24px rgba(20,60,51,.55);
+  transition: transform .25s var(--ease-out, ease), box-shadow .25s var(--ease-out, ease);
+  font-family: inherit;
+}
+.mad-encart::after {
+  content: ""; position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: rgba(255,255,255,.07); pointer-events: none;
+}
+.mad-encart:hover { transform: translateY(-4px); box-shadow: 0 30px 70px -22px rgba(20,60,51,.6); }
+.mad-encart:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.mad-encart-badge {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  background: rgba(255,255,255,.16); color: #fff;
+  padding: 5px 12px; border-radius: 999px; margin-bottom: 1.25rem; z-index: 1;
+}
+.mad-encart-icon {
+  display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px;
+  background: rgba(255,255,255,.14); color: #fff; margin-bottom: 1rem; z-index: 1;
+}
+.mad-encart-icon svg { width: 26px; height: 26px; }
+.mad-encart-title {
+  font-family: var(--font-serif, 'Fraunces', serif); font-size: 1.55rem; font-weight: 600;
+  line-height: 1.18; color: #fff; margin-bottom: 0.65rem; z-index: 1;
+}
+.mad-encart-title em { font-style: italic; color: #ffe9dc; }
+.mad-encart-sub {
+  font-size: 0.92rem; line-height: 1.55; color: rgba(255,255,255,.82);
+  margin-bottom: 1.5rem; max-width: 30em; z-index: 1;
+}
+.mad-encart-cta {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  font-size: 0.92rem; font-weight: 700; color: var(--teal-ink, #143c33);
+  background: #fff; padding: 0.7em 1.3em; border-radius: 999px; z-index: 1;
+  transition: gap .2s ease;
+}
+.mad-encart:hover .mad-encart-cta { gap: 0.85em; }
+.mad-encart-cta svg { width: 17px; height: 17px; }
+
+/* ═══ MODAL « RETOUR À DOMICILE » ═══ */
+.mad-overlay {
+  display: none; position: fixed; inset: 0; z-index: 2300;
+  background: rgba(15,40,33,.72); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 1.25rem;
+}
+.mad-overlay.open { display: flex; animation: madFade .25s ease; }
+@keyframes madFade { from { opacity: 0; } to { opacity: 1; } }
+.mad-modal {
+  background: var(--paper, #fffdf8); border-radius: var(--radius-xl, 22px);
+  width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto;
+  position: relative; box-shadow: 0 40px 100px -30px rgba(0,0,0,.5);
+  animation: madRise .35s var(--ease-out, cubic-bezier(.2,.7,.2,1));
+}
+@keyframes madRise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+.mad-close {
+  position: absolute; top: 1rem; right: 1rem; z-index: 2;
+  width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(20,60,51,.08); color: var(--teal-ink, #143c33);
+  display: grid; place-items: center; transition: background .15s;
+}
+.mad-close:hover { background: rgba(20,60,51,.16); }
+.mad-close svg { width: 18px; height: 18px; }
+.mad-modal-head { padding: 2.25rem 2.25rem 1.25rem; }
+.mad-modal-eyebrow {
+  display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--apricot-deep, #d97742);
+  margin-bottom: 0.85rem;
+}
+.mad-modal-head h3 {
+  font-family: var(--font-serif, 'Fraunces', serif); font-size: 1.5rem; font-weight: 600;
+  line-height: 1.2; color: var(--teal-ink, #143c33); margin: 0 0 0.7rem;
+}
+.mad-modal-head p { font-size: 0.95rem; line-height: 1.6; color: var(--fg-secondary, #5d564c); margin: 0; }
+.mad-points { list-style: none; margin: 0; padding: 0 2.25rem; display: grid; gap: 0.9rem; }
+.mad-points li {
+  display: flex; gap: 0.85rem; align-items: flex-start;
+  font-size: 0.9rem; line-height: 1.5; color: var(--fg-secondary, #5d564c);
+}
+.mad-points li b { color: var(--teal-ink, #143c33); }
+.mad-point-ico {
+  flex: none; width: 38px; height: 38px; border-radius: 11px;
+  background: var(--sand, #f1e8d8); display: grid; place-items: center; font-size: 1.15rem;
+}
+.mad-modal-actions {
+  display: flex; flex-wrap: wrap; gap: 0.75rem; padding: 1.5rem 2.25rem 2.25rem;
+}
+.mad-btn-primary {
+  flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 0.55em;
+  background: var(--teal, #388372); color: #fff; text-decoration: none;
+  font-weight: 700; font-size: 0.95rem; padding: 0.95em 1.4em; border-radius: 999px;
+  transition: background .18s, transform .18s; white-space: nowrap;
+}
+.mad-btn-primary:hover { background: var(--teal-deep, #1f5a4c); transform: translateY(-2px); }
+.mad-btn-primary svg { width: 17px; height: 17px; }
+.mad-btn-call {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
+  background: transparent; color: var(--teal-deep, #1f5a4c);
+  border: 2px solid var(--teal, #388372); text-decoration: none;
+  font-weight: 700; font-size: 0.95rem; padding: calc(0.95em - 2px) 1.3em; border-radius: 999px;
+  transition: background .18s, color .18s; white-space: nowrap;
+}
+.mad-btn-call:hover { background: var(--teal, #388372); color: #fff; }
+.mad-btn-call svg { width: 16px; height: 16px; }
+@media (max-width: 520px) {
+  .mad-encart { padding: 1.6rem 1.5rem; }
+  .mad-encart-title { font-size: 1.3rem; }
+  .mad-modal-head { padding: 2rem 1.5rem 1rem; }
+  .mad-points { padding: 0 1.5rem; }
+  .mad-modal-actions { padding: 1.25rem 1.5rem 2rem; }
+  .mad-btn-primary, .mad-btn-call { flex: 1 1 100%; }
+}
+
 /* ─── MODAL McISAAC ─── */
 .modal-backdrop {
   display: none; position: fixed; inset: 0;
@@ -2140,97 +2259,19 @@ footer {
       </div>
     </div>
     <div class="hero-visual reveal reveal-delay-2">
-      <div class="hero-form-wrap" id="hero-form-wrap">
-
-        <!-- En-tête -->
-        <div class="hero-form-head">
-          <h3>Nous envoyer un message</h3>
-          <p>Ordonnance, carte mutuelle, question… Réponse dans les meilleurs délais.</p>
-        </div>
-
-        <!-- Formulaire -->
-        <form id="hero-contact-form" novalidate>
-
-          <!-- Honeypot anti-spam -->
-          <input type="text" name="_honey" style="display:none">
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="hf-nom">Nom</label>
-              <input class="form-input" id="hf-nom" name="nom" type="text" placeholder="Dupont" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="hf-prenom">Prénom</label>
-              <input class="form-input" id="hf-prenom" name="prenom" type="text" placeholder="Marie" required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="hf-email">Email</label>
-              <input class="form-input" id="hf-email" name="email" type="email" placeholder="marie@exemple.fr" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="hf-tel">Téléphone</label>
-              <input class="form-input" id="hf-tel" name="telephone" type="tel" placeholder="06 12 34 56 78">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="hf-type">Type de demande</label>
-            <select class="form-select" id="hf-type" name="type_demande" required>
-              <option value="" disabled selected>Choisissez…</option>
-              <option value="Ordonnance">📋 Ordonnance</option>
-              <option value="Carte mutuelle">💳 Carte mutuelle</option>
-              <option value="Question">💬 Question</option>
-              <option value="Autre document">📎 Autre document</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="hf-message">Message</label>
-            <textarea class="form-textarea" id="hf-message" name="message" placeholder="Décrivez votre demande…"></textarea>
-          </div>
-
-          <!-- Zone de dépôt de fichiers -->
-          <div class="form-group">
-            <label class="form-label">Pièces jointes (PDF, JPG, PNG — 20 Mo max)</label>
-            <div class="file-drop-zone" id="file-drop-zone" role="button" tabindex="0" aria-label="Zone de dépôt de fichiers">
-              <svg class="file-drop-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <p class="file-drop-text">Glissez vos fichiers ici ou <strong>parcourir</strong></p>
-              <input type="file" id="file-input" name="attachments" multiple accept=".pdf,.jpg,.jpeg,.png" style="display:none">
-            </div>
-            <div class="file-size-error" id="file-size-error">⚠ La taille totale des fichiers dépasse 20 Mo.</div>
-            <div class="file-list" id="file-list"></div>
-          </div>
-
-          <!-- RGPD -->
-          <label class="form-check">
-            <input type="checkbox" id="hf-rgpd" required>
-            J'accepte que mes données personnelles soient utilisées par la Pharmacie de La Biolle pour traiter ma demande, conformément au RGPD. Elles ne seront jamais transmises à des tiers.
-          </label>
-
-          <!-- Bannière d'erreur -->
-          <div class="form-error-banner" id="form-error-banner" role="alert"></div>
-
-          <button type="submit" class="btn-submit-form" id="btn-submit-form">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Envoyer le message
-          </button>
-
-        </form>
-
-        <!-- État de succès (masqué par défaut) -->
-        <div class="form-success-state" id="form-success-state" style="display:none;">
-          <div class="form-success-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <p class="form-success-title">Message envoyé !</p>
-          <p class="form-success-sub">Votre message a bien été transmis à la Pharmacie de La Biolle. Nous vous répondrons dans les meilleurs délais.</p>
-          <button onclick="resetContactForm()" style="font-size:12px;color:var(--teal);background:none;border:none;cursor:pointer;text-decoration:underline;margin-top:0.25rem;">Envoyer un autre message</button>
-        </div>
-
-      </div>
+      <!-- ENCART « Retour à domicile » — ouvre une modale (voir openMAD) -->
+      <button class="mad-encart" type="button" onclick="openMAD()" aria-haspopup="dialog" aria-label="En savoir plus sur le retour à domicile après hospitalisation">
+        <span class="mad-encart-badge">Aidants &amp; familles</span>
+        <span class="mad-encart-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 0 0 1 1h3m10-11l2 2m-2-2v10a1 1 0 0 1-1 1h-3m-6 0a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1m-6 0h6"/></svg>
+        </span>
+        <span class="mad-encart-title">Votre proche sort de l'hôpital&nbsp;?<br><em>On s'occupe de tout.</em></span>
+        <span class="mad-encart-sub">Lit médicalisé, fauteuil, matériel de soin&nbsp;: livré et installé à domicile sous 24&nbsp;h, 0&nbsp;€ à avancer.</span>
+        <span class="mad-encart-cta">
+          En savoir plus
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </button>
     </div>
   </div>
 </section>
@@ -2715,6 +2756,51 @@ footer {
     </div>
   </div>
 </footer>
+
+<!-- ===== MODAL RETOUR À DOMICILE (aidants) ===== -->
+<div class="mad-overlay" id="mad-overlay" role="dialog" aria-modal="true" aria-labelledby="mad-modal-title" onclick="if(event.target===this)closeMAD()">
+  <div class="mad-modal">
+    <button class="mad-close" type="button" onclick="closeMAD()" aria-label="Fermer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div class="mad-modal-head">
+      <span class="mad-modal-eyebrow">Sortie d'hospitalisation · Aidants &amp; familles</span>
+      <h3 id="mad-modal-title">Votre proche sort de l'hôpital&nbsp;? On s'occupe de tout.</h3>
+      <p>Vous n'avez pas à devenir expert en matériel médical. Nous préparons le domicile pour un retour serein — avant même que l'ambulance n'arrive.</p>
+    </div>
+
+    <ul class="mad-points">
+      <li>
+        <span class="mad-point-ico" aria-hidden="true">🛏️</span>
+        <span><b>Matériel livré &amp; installé sous 24&nbsp;h</b><br>Lit médicalisé, matelas anti-escarres, fauteuil roulant, déambulateur… monté et réglé chez votre proche.</span>
+      </li>
+      <li>
+        <span class="mad-point-ico" aria-hidden="true">💶</span>
+        <span><b>0&nbsp;€ à avancer</b><br>Tiers payant intégral : nous facturons directement l'Assurance Maladie et la mutuelle.</span>
+      </li>
+      <li>
+        <span class="mad-point-ico" aria-hidden="true">🗂️</span>
+        <span><b>L'administratif, c'est pour nous</b><br>Ordonnance, feuilles de soins et coup de main pour les dossiers d'aides (ARDH, APA).</span>
+      </li>
+      <li>
+        <span class="mad-point-ico" aria-hidden="true">📞</span>
+        <span><b>Un interlocuteur unique</b><br>Un référent dédié vous accompagne, du premier appel à la première nuit à la maison.</span>
+      </li>
+    </ul>
+
+    <div class="mad-modal-actions">
+      <a class="mad-btn-primary" href="retour-domicile.html">
+        Découvrir l'accompagnement complet
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a class="mad-btn-call" href="tel:+33479542249">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
+        04&nbsp;79&nbsp;54&nbsp;22&nbsp;49
+      </a>
+    </div>
+  </div>
+</div>
 
 <!-- ===== MODAL McISAAC ===== -->
 <!-- ═══ MODAL — ÉPIDÉMIES & SANTÉ PUBLIQUE AuRA ═══ -->
@@ -3883,6 +3969,23 @@ function showResult() {
 const _s = document.createElement('style');
 _s.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
 document.head.appendChild(_s);
+
+/* ═══ MODAL RETOUR À DOMICILE (aidants) ═══ */
+(function () {
+  const overlay = document.getElementById('mad-overlay');
+  if (!overlay) return;
+  window.openMAD = function () {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeMAD = function () {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) window.closeMAD();
+  });
+})();
 
 /* ===== AFFLUENCE WIDGET ===== */
 (function () {

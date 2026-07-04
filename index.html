@@ -756,6 +756,21 @@ section { padding: clamp(4rem,8vh,6rem) clamp(1.5rem,5vw,3.5rem); }
   transition: border-color 0.2s, color 0.2s;
 }
 .info-card-body a:hover { color: #fff; border-color: #fff; }
+.info-card--mss { border-color: rgba(0,178,142,0.4); background: rgba(0,178,142,0.08); }
+.info-card--mss:hover { background: rgba(0,178,142,0.16); }
+.mss-address {
+  font-size: 0.82rem; font-family: var(--font-sans); word-break: break-all;
+  background: rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px;
+  color: rgba(255,255,255,0.95); letter-spacing: 0.02em;
+}
+.mss-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,178,142,0.2); border: 1px solid rgba(0,178,142,0.5);
+  border-radius: 8px; padding: 10px 16px; color: #fff;
+  font-size: 0.88rem; font-weight: 500; text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.mss-btn:hover { background: rgba(0,178,142,0.35); transform: translateY(-1px); }
 .hours-row {
   display: flex; justify-content: space-between;
   padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.88rem;
@@ -2670,6 +2685,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p>Téléphone :<br/><a href="tel:+33479542249">04 79 54 22 49</a></p>
           <br/>
           <p>Email :<br/><a href="mailto:pharmaciedelabiolle@gmail.com">pharmaciedelabiolle@gmail.com</a></p>
+        </div>
+      </div>
+
+      <!-- Ordonnance MSSanté -->
+      <div class="info-card info-card--mss reveal reveal-delay-3">
+        <div class="info-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 7 12 13 2 7"/></svg>
+        </div>
+        <p class="info-card-title">Envoyez votre ordonnance</p>
+        <div class="info-card-body">
+          <p>Via <strong>Mon Espace Santé</strong>, envoyez-nous votre ordonnance en toute sécurité. Nous préparons votre commande.</p>
+          <br/>
+          <p class="mss-address">pharmaciecatteau.73410@aura.mssante.fr</p>
+          <br/>
+          <a href="https://www.monespacesante.fr" target="_blank" rel="noopener noreferrer" class="mss-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Accéder à Mon Espace Santé
+          </a>
         </div>
       </div>
 

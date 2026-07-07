@@ -10,10 +10,16 @@
   "theme_color": "#266E62",
   "icons": [
     {
-      "src": "/assets/logo-pharmacie-biolle.jpg",
+      "src": "/favicon.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

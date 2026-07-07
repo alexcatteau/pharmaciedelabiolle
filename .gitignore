@@ -15,6 +15,10 @@ desktop.ini
 # Fichier de test — ne pas publier
 test_js.html
 
+# Documents internes / non destinés à la publication
+promos/App Store Connect.pdf
+*copie*
+
 # Design system (source interne, pas nécessaire en prod)
 pharmacie-de-la-biolle-design-system/
 

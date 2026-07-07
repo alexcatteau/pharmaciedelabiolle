@@ -1,0 +1,19 @@
+{
+  "name": "Pharmacie de La Biolle",
+  "short_name": "Pharmacie La Biolle",
+  "description": "Pharmacie de proximité à La Biolle (Savoie) : vaccination, TROD, bilan de médication, matériel médical.",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FBF8F2",
+  "theme_color": "#266E62",
+  "icons": [
+    {
+      "src": "/assets/logo-pharmacie-biolle.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

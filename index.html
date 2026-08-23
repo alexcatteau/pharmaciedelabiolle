@@ -4411,92 +4411,109 @@ document.head.appendChild(_s);
 
 /* ═══ BANDEAU SAISONNIER ═══ */
 (function () {
-  var banner = document.getElementById('season-banner');
-  if (!banner) return;
-  if (sessionStorage.getItem('seasonBannerClosed') === '1') return;
-
-  /* Un message par période. `href` = vraie page (bon pour le maillage interne),
-     `action` = ouverture d'un outil déjà présent sur la page. */
-  var VACCIN = {
-    icon: '💉',
-    title: 'Campagne de vaccination contre la grippe',
-    sub: 'Nous vaccinons sans rendez-vous, directement au comptoir.',
-    cta: 'La vaccination en pharmacie',
-    href: '/vaccination/'
-  };
-  var POLLEN = {
-    icon: '🌿',
-    title: 'Saison des pollens',
-    sub: 'Consultez le risque allergique du jour en Auvergne-Rhône-Alpes.',
-    cta: 'Voir le risque du jour',
-    action: function () {
-      if (window.EPI && typeof EPI.open === 'function') {
-        EPI.open();
-        if (typeof EPI.switchTab === 'function') { try { EPI.switchTab('pollen'); } catch (e) {} }
-        return true;
-      }
-      return false;
-    }
-  };
-  var VOYAGE = {
-    icon: '🧳',
-    title: 'Vous partez en voyage cet été&nbsp;?',
-    sub: 'Trousse à pharmacie, vaccins, ordonnances : préparez votre départ avec nous.',
-    cta: 'Préparer mon voyage',
-    action: function () {
-      if (typeof window.openVoyage === 'function') { openVoyage(); return true; }
-      return false;
-    }
-  };
-  var VACCIN_BIENTOT = {
-    icon: '💉',
-    title: 'La campagne de vaccination antigrippale approche',
-    sub: 'Dès son ouverture, nous vaccinons sans rendez-vous, directement au comptoir.',
-    cta: 'La vaccination en pharmacie',
-    href: '/vaccination/'
-  };
-  var HIVER = {
-    icon: '🤧',
-    title: 'Épidémies hivernales',
-    sub: 'Grippe, gastro-entérite, bronchiolite : suivez la situation en Savoie.',
-    cta: 'Voir la situation',
-    action: function () {
-      if (window.EPI && typeof EPI.open === 'function') { EPI.open(); return true; }
-      return false;
-    }
-  };
-
-  /*        J    F    M    A    M    J    J    A    S    O    N    D  */
-  var BY_MONTH = [HIVER, HIVER, POLLEN, POLLEN, POLLEN, VOYAGE,
-                  VOYAGE, VOYAGE, VACCIN_BIENTOT, VACCIN, VACCIN, HIVER];
-
-  var s = BY_MONTH[new Date().getMonth()];
-  if (!s) return;
-
-  /* Un message reposant sur un outil absent de la page ne doit pas s'afficher. */
-  if (s.action && !(window.EPI || typeof window.openVoyage === 'function')) return;
-
-  document.getElementById('season-icon').textContent = s.icon;
-  document.getElementById('season-title').innerHTML = s.title;
-  document.getElementById('season-sub').innerHTML = s.sub;
-
-  var cta = document.getElementById('season-cta');
-  cta.textContent = s.cta;
-  if (s.href) {
-    cta.setAttribute('href', s.href);
-  } else {
-    cta.setAttribute('role', 'button');
-    cta.removeAttribute('href');
-    cta.style.cursor = 'pointer';
-    cta.addEventListener('click', function (e) { e.preventDefault(); s.action(); });
+  /* L'init est différée : openVoyage et EPI sont déclarés plus bas dans la page.
+     EPI étant un `const` de portée globale, il n'apparaît pas sur `window`. */
+  function hasEPI() {
+    try { return typeof EPI !== 'undefined' && typeof EPI.open === 'function'; }
+    catch (e) { return false; }
+  }
+  function hasVoyage() {
+    try { return typeof openVoyage === 'function'; }
+    catch (e) { return false; }
   }
 
-  document.getElementById('season-close').addEventListener('click', function () {
-    banner.hidden = true;
-    try { sessionStorage.setItem('seasonBannerClosed', '1'); } catch (e) {}
-  });
+  function init() {
+    var banner = document.getElementById('season-banner');
+    if (!banner) return;
+    try { if (sessionStorage.getItem('seasonBannerClosed') === '1') return; } catch (e) {}
 
-  banner.hidden = false;
+    /* `href` = vraie page (nourrit le maillage interne) ;
+       `action` = ouverture d'un outil déjà présent sur la page. */
+    var VACCIN = {
+      icon: '💉',
+      title: 'Campagne de vaccination contre la grippe',
+      sub: 'Nous vaccinons sans rendez-vous, directement au comptoir.',
+      cta: 'La vaccination en pharmacie',
+      href: '/vaccination/'
+    };
+    var VACCIN_BIENTOT = {
+      icon: '💉',
+      title: 'La campagne de vaccination antigrippale approche',
+      sub: 'Dès son ouverture, nous vaccinons sans rendez-vous, directement au comptoir.',
+      cta: 'La vaccination en pharmacie',
+      href: '/vaccination/'
+    };
+    var POLLEN = {
+      icon: '🌿',
+      title: 'Saison des pollens',
+      sub: 'Consultez le risque allergique du jour en Auvergne-Rhône-Alpes.',
+      cta: 'Voir le risque du jour',
+      ready: hasEPI,
+      action: function () {
+        EPI.open();
+        if (typeof EPI.switchTab === 'function') { try { EPI.switchTab('pollen'); } catch (e) {} }
+      }
+    };
+    var VOYAGE = {
+      icon: '🧳',
+      title: 'Vous partez en voyage cet été&nbsp;?',
+      sub: 'Trousse à pharmacie, vaccins, ordonnances : préparez votre départ avec nous.',
+      cta: 'Préparer mon voyage',
+      ready: hasVoyage,
+      action: function () { openVoyage(); }
+    };
+    var HIVER = {
+      icon: '🤧',
+      title: 'Épidémies hivernales',
+      sub: 'Grippe, gastro-entérite, bronchiolite : suivez la situation en Savoie.',
+      cta: 'Voir la situation',
+      ready: hasEPI,
+      action: function () { EPI.open(); }
+    };
+    /* Repli si l'outil attendu n'est pas disponible : on garde un message utile. */
+    var REPLI = {
+      icon: '💊',
+      title: 'Une question sur votre traitement&nbsp;?',
+      sub: 'Nos pharmaciens vous reçoivent sans rendez-vous, du lundi au samedi.',
+      cta: 'Découvrir nos services',
+      href: '/#services'
+    };
+
+    /*        J       F       M       A       M       J       J       A       S               O       N       D  */
+    var BY_MONTH = [HIVER,  HIVER,  POLLEN, POLLEN, POLLEN, VOYAGE, VOYAGE, VOYAGE, VACCIN_BIENTOT, VACCIN, VACCIN, HIVER];
+
+    var s = BY_MONTH[new Date().getMonth()];
+    if (!s) return;
+    if (s.ready && !s.ready()) s = REPLI;
+
+    document.getElementById('season-icon').textContent = s.icon;
+    document.getElementById('season-title').innerHTML = s.title;
+    document.getElementById('season-sub').innerHTML = s.sub;
+
+    var cta = document.getElementById('season-cta');
+    cta.textContent = s.cta;
+    if (s.href) {
+      cta.setAttribute('href', s.href);
+    } else {
+      cta.setAttribute('role', 'button');
+      cta.removeAttribute('href');
+      cta.style.cursor = 'pointer';
+      cta.addEventListener('click', function (e) { e.preventDefault(); s.action(); });
+    }
+
+    document.getElementById('season-close').addEventListener('click', function () {
+      banner.hidden = true;
+      try { sessionStorage.setItem('seasonBannerClosed', '1'); } catch (e) {}
+    });
+
+    banner.hidden = false;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 
 /* ===== AFFLUENCE WIDGET ===== */

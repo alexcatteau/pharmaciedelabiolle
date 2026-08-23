@@ -712,8 +712,49 @@ section { padding: clamp(4rem,8vh,6rem) clamp(1.5rem,5vw,3.5rem); }
   line-height: 1.75; max-width: 560px; margin-bottom: 3rem;
 }
 
+/* ─── BANDEAU SAISONNIER ─── */
+.season-banner {
+  background: var(--biolle-teal-50); border-bottom: 1px solid var(--biolle-teal-100);
+  padding: 0.85rem clamp(1.5rem, 5vw, 3.5rem);
+}
+.season-banner[hidden] { display: none; }
+.season-inner {
+  max-width: 1120px; margin: 0 auto;
+  display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap;
+}
+.season-icon { font-size: 1.5rem; line-height: 1; flex: none; }
+.season-text { flex: 1 1 260px; margin: 0; line-height: 1.45; font-size: 0.92rem; color: var(--ink-700); }
+.season-text strong { display: block; color: var(--biolle-teal-800); font-size: 0.99rem; }
+.season-cta {
+  flex: none; display: inline-flex; align-items: center; gap: 7px;
+  background: var(--biolle-teal-700); color: #fff; text-decoration: none;
+  padding: 0.6rem 1.15rem; border-radius: var(--radius-pill);
+  font-size: 0.87rem; font-weight: 600; cursor: pointer; border: none;
+  transition: background var(--dur-base), transform var(--dur-base);
+}
+.season-cta:hover { background: var(--biolle-teal-800); transform: translateY(-1px); }
+.season-close {
+  flex: none; width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
+  background: transparent; color: var(--ink-500);
+  display: grid; place-items: center; transition: background var(--dur-base), color var(--dur-base);
+}
+.season-close:hover { background: rgba(19,57,52,.08); color: var(--ink-900); }
+.season-close svg { width: 15px; height: 15px; }
+@media (max-width: 560px) {
+  .season-cta { flex: 1 1 100%; justify-content: center; }
+  .season-close { position: absolute; right: 12px; top: 10px; }
+  .season-banner { position: relative; }
+}
+
 /* ─── SERVICES ─── */
 #services { background: var(--cream-100); }
+.service-more {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 0.7rem;
+  font-size: 0.86rem; font-weight: 600; color: var(--biolle-teal-700);
+  text-decoration: none; transition: gap var(--dur-base) var(--ease-out), color var(--dur-base);
+}
+.service-more svg { width: 14px; height: 14px; }
+.service-more:hover { gap: 11px; color: var(--biolle-teal-800); }
 .services-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -2522,6 +2563,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- ===== BANDEAU SAISONNIER (contenu injecté par JS selon le mois) ===== -->
+<aside class="season-banner" id="season-banner" hidden aria-label="Information de saison">
+  <div class="season-inner">
+    <span class="season-icon" id="season-icon" aria-hidden="true"></span>
+    <p class="season-text">
+      <strong id="season-title"></strong>
+      <span id="season-sub"></span>
+    </p>
+    <a class="season-cta" id="season-cta" href="#"></a>
+    <button class="season-close" id="season-close" type="button" aria-label="Masquer ce message">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+</aside>
+
 <!-- ===== SÉLECTION DU MOIS ===== -->
 <section id="selection-mois" class="selection-section" aria-label="Sélection du mois">
   <div class="selection-inner">
@@ -2637,6 +2693,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div>
           <p class="service-name">Vaccination</p>
           <p class="service-desc">Grippe, Covid-19, DTP et autres vaccins recommandés, réalisés directement à la pharmacie sans ordonnance préalable.</p>
+          <a class="service-more" href="/vaccination/" aria-label="En savoir plus sur : Vaccination">En savoir plus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
 
@@ -2648,10 +2705,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div>
           <p class="service-name">TROD Angine</p>
           <p class="service-desc">Test rapide pour distinguer angine virale et bactérienne, avec délivrance d'antibiotiques si le test est positif.</p>
+          <a class="service-more" href="/trod-angine/" aria-label="En savoir plus sur : TROD Angine">En savoir plus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-        <button class="service-rdv-btn" onclick="openMcIsaacModal()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Prendre RDV
+        <button class="service-rdv-btn" onclick="openMcIsaacModal()" aria-haspopup="dialog">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Évaluer mes symptômes
         </button>
       </div>
 
@@ -2663,6 +2721,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div>
           <p class="service-name">TROD Cystite</p>
           <p class="service-desc">Dépistage rapide de cystite non compliquée chez la femme, avec orientation thérapeutique immédiate selon le protocole national.</p>
+          <a class="service-more" href="/trod-cystite/" aria-label="En savoir plus sur : TROD Cystite">En savoir plus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
 
@@ -2674,6 +2733,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div>
           <p class="service-name">Bilan de Médication</p>
           <p class="service-desc">Entretien personnalisé pour analyser vos traitements, optimiser leur efficacité et prévenir les interactions médicamenteuses.</p>
+          <a class="service-more" href="/bilan-de-medication/" aria-label="En savoir plus sur : Bilan de Médication">En savoir plus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
 
@@ -2705,6 +2765,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div>
           <p class="service-name">Entretien Femme Enceinte</p>
           <p class="service-desc">Accompagnement pharmaceutique dédié : suivi des médicaments, vitamines, interactions et conseils adaptés à la grossesse.</p>
+          <a class="service-more" href="/entretien-femme-enceinte/" aria-label="En savoir plus sur : Entretien Femme Enceinte">En savoir plus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
 
@@ -2732,6 +2793,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div>
           <p class="service-name">Orthopédie & Matériel Médical</p>
           <p class="service-desc">Vente et location de matériel médical, contention veineuse et équipements orthopédiques. Conseil personnalisé.</p>
+          <a class="service-more" href="/materiel-medical/" aria-label="En savoir plus sur : Orthopédie & Matériel Médical">En savoir plus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <button class="service-rdv-btn" onclick="openCatalogueModal()">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
@@ -4345,6 +4407,96 @@ document.head.appendChild(_s);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && overlay.classList.contains('open')) window.closeMSS();
   });
+})();
+
+/* ═══ BANDEAU SAISONNIER ═══ */
+(function () {
+  var banner = document.getElementById('season-banner');
+  if (!banner) return;
+  if (sessionStorage.getItem('seasonBannerClosed') === '1') return;
+
+  /* Un message par période. `href` = vraie page (bon pour le maillage interne),
+     `action` = ouverture d'un outil déjà présent sur la page. */
+  var VACCIN = {
+    icon: '💉',
+    title: 'Campagne de vaccination contre la grippe',
+    sub: 'Nous vaccinons sans rendez-vous, directement au comptoir.',
+    cta: 'La vaccination en pharmacie',
+    href: '/vaccination/'
+  };
+  var POLLEN = {
+    icon: '🌿',
+    title: 'Saison des pollens',
+    sub: 'Consultez le risque allergique du jour en Auvergne-Rhône-Alpes.',
+    cta: 'Voir le risque du jour',
+    action: function () {
+      if (window.EPI && typeof EPI.open === 'function') {
+        EPI.open();
+        if (typeof EPI.switchTab === 'function') { try { EPI.switchTab('pollen'); } catch (e) {} }
+        return true;
+      }
+      return false;
+    }
+  };
+  var VOYAGE = {
+    icon: '🧳',
+    title: 'Vous partez en voyage cet été&nbsp;?',
+    sub: 'Trousse à pharmacie, vaccins, ordonnances : préparez votre départ avec nous.',
+    cta: 'Préparer mon voyage',
+    action: function () {
+      if (typeof window.openVoyage === 'function') { openVoyage(); return true; }
+      return false;
+    }
+  };
+  var VACCIN_BIENTOT = {
+    icon: '💉',
+    title: 'La campagne de vaccination antigrippale approche',
+    sub: 'Dès son ouverture, nous vaccinons sans rendez-vous, directement au comptoir.',
+    cta: 'La vaccination en pharmacie',
+    href: '/vaccination/'
+  };
+  var HIVER = {
+    icon: '🤧',
+    title: 'Épidémies hivernales',
+    sub: 'Grippe, gastro-entérite, bronchiolite : suivez la situation en Savoie.',
+    cta: 'Voir la situation',
+    action: function () {
+      if (window.EPI && typeof EPI.open === 'function') { EPI.open(); return true; }
+      return false;
+    }
+  };
+
+  /*        J    F    M    A    M    J    J    A    S    O    N    D  */
+  var BY_MONTH = [HIVER, HIVER, POLLEN, POLLEN, POLLEN, VOYAGE,
+                  VOYAGE, VOYAGE, VACCIN_BIENTOT, VACCIN, VACCIN, HIVER];
+
+  var s = BY_MONTH[new Date().getMonth()];
+  if (!s) return;
+
+  /* Un message reposant sur un outil absent de la page ne doit pas s'afficher. */
+  if (s.action && !(window.EPI || typeof window.openVoyage === 'function')) return;
+
+  document.getElementById('season-icon').textContent = s.icon;
+  document.getElementById('season-title').innerHTML = s.title;
+  document.getElementById('season-sub').innerHTML = s.sub;
+
+  var cta = document.getElementById('season-cta');
+  cta.textContent = s.cta;
+  if (s.href) {
+    cta.setAttribute('href', s.href);
+  } else {
+    cta.setAttribute('role', 'button');
+    cta.removeAttribute('href');
+    cta.style.cursor = 'pointer';
+    cta.addEventListener('click', function (e) { e.preventDefault(); s.action(); });
+  }
+
+  document.getElementById('season-close').addEventListener('click', function () {
+    banner.hidden = true;
+    try { sessionStorage.setItem('seasonBannerClosed', '1'); } catch (e) {}
+  });
+
+  banner.hidden = false;
 })();
 
 /* ===== AFFLUENCE WIDGET ===== */

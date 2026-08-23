@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!--
+      Copie ce fichier vers Parla/Config.plist (il est dans .gitignore).
+
+      EN PRODUCTION : ne renseigne QUE PARLA_PROXY_URL.
+      Une clé Anthropic dans un binaire iOS est extractible en quelques minutes.
+    -->
+
+    <!-- Ton backend, qui détient la clé. Chemin appelé : <URL>/v1/messages -->
+    <key>PARLA_PROXY_URL</key>
+    <string></string>
+
+    <!-- Jeton de TON service identifiant l'utilisateur (pas une clé Anthropic). -->
+    <key>PARLA_USER_TOKEN</key>
+    <string></string>
+
+    <!-- DÉVELOPPEMENT UNIQUEMENT. Ignoré dans les builds Release. -->
+    <key>ANTHROPIC_API_KEY</key>
+    <string></string>
+</dict>
+</plist>

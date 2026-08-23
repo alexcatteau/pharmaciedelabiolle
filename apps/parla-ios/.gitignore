@@ -1,0 +1,10 @@
+# Secrets locaux — ne doit jamais être commité
+Parla/Config.plist
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.xcworkspace/xcuserdata/
+.DS_Store

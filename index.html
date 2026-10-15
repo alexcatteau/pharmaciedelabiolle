@@ -984,27 +984,6 @@ section { padding: clamp(4rem,8vh,6rem) clamp(1.5rem,5vw,3.5rem); }
   background: var(--teal, #388372); color: #fff; font-family: var(--font-sans);
   font-weight: 600; font-size: 0.9rem; display: grid; place-items: center;
 }
-.mss-addr-block {
-  margin: 1.5rem 2.25rem 0; padding: 1.1rem 1.25rem;
-  background: var(--sand, #f1e8d8); border-radius: 14px;
-}
-.mss-addr-label {
-  display: block; font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--apricot-deep, #d97742); margin-bottom: 0.6rem;
-}
-.mss-addr-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
-.mss-addr {
-  flex: 1 1 auto; min-width: 0; font-family: var(--font-sans); font-size: 0.92rem;
-  font-weight: 600; color: var(--teal-ink, #143c33); word-break: break-all; letter-spacing: 0.01em;
-}
-.mss-copy {
-  flex: none; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer;
-  background: var(--teal, #388372); color: #fff; border: none; border-radius: 9px;
-  padding: 0.55rem 0.9rem; font: inherit; font-size: 0.82rem; font-weight: 500;
-  transition: background 0.18s, transform 0.18s;
-}
-.mss-copy:hover { background: var(--teal-deep, #1f5a4c); transform: translateY(-1px); }
-.mss-copy.copied { background: #2e7d5b; }
 .mss-open-btn {
   flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
   background: rgba(20,60,51,.06); color: var(--teal-ink, #143c33); text-decoration: none;
@@ -1014,7 +993,6 @@ section { padding: clamp(4rem,8vh,6rem) clamp(1.5rem,5vw,3.5rem); }
 .mss-open-btn:hover { background: rgba(20,60,51,.12); transform: translateY(-2px); }
 @media (max-width: 520px) {
   .mss-steps { padding: 0 1.5rem; }
-  .mss-addr-block { margin: 1.25rem 1.5rem 0; }
 }
 .hours-row {
   display: flex; justify-content: space-between;
@@ -3161,19 +3139,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li><span class="mss-step-num">1</span><span>Connectez-vous à votre <b>Mon Espace Santé</b> (via FranceConnect ou votre identifiant).</span></li>
       <li><span class="mss-step-num">2</span><span>Ouvrez votre <b>messagerie sécurisée</b>.</span></li>
       <li><span class="mss-step-num">3</span><span>Rédigez un message et <b>joignez la photo de votre ordonnance</b>.</span></li>
-      <li><span class="mss-step-num">4</span><span>Envoyez-le à notre adresse ci-dessous.</span></li>
+      <li><span class="mss-step-num">4</span><span>Choisissez <b>Pharmacie de La Biolle</b> comme destinataire dans l'annuaire, puis envoyez.</span></li>
     </ol>
-
-    <div class="mss-addr-block">
-      <span class="mss-addr-label">Notre adresse MSSanté</span>
-      <div class="mss-addr-row">
-        <code class="mss-addr" id="mss-addr">pharmaciecatteau.73410@aura.mssante.fr</code>
-        <button type="button" class="mss-copy" id="mss-copy-btn" onclick="copyMSS()" aria-label="Copier l'adresse">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span class="mss-copy-txt">Copier</span>
-        </button>
-      </div>
-    </div>
 
     <div class="mad-modal-actions">
       <a class="mss-open-btn" href="https://www.monespacesante.fr" target="_blank" rel="noopener noreferrer">
@@ -4380,30 +4347,6 @@ document.head.appendChild(_s);
   window.closeMSS = function () {
     overlay.classList.remove('open');
     document.body.style.overflow = '';
-  };
-  window.copyMSS = function () {
-    const addr = document.getElementById('mss-addr');
-    const btn = document.getElementById('mss-copy-btn');
-    const txt = btn ? btn.querySelector('.mss-copy-txt') : null;
-    if (!addr) return;
-    const value = addr.textContent.trim();
-    const done = function () {
-      if (!btn) return;
-      btn.classList.add('copied');
-      if (txt) txt.textContent = 'Copié !';
-      setTimeout(function () {
-        btn.classList.remove('copied');
-        if (txt) txt.textContent = 'Copier';
-      }, 2000);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(value).then(done).catch(done);
-    } else {
-      const ta = document.createElement('textarea');
-      ta.value = value; document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta); done();
-    }
   };
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && overlay.classList.contains('open')) window.closeMSS();

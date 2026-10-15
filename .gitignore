@@ -24,3 +24,6 @@ pharmacie-de-la-biolle-design-system/
 
 # Serveur local Claude
 .claude/serve.py
+
+# Espace pro : sources en clair (seul espace-pro/index.html, chiffré, est publié)
+espace-pro-src/

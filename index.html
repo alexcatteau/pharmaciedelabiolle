@@ -36,8 +36,21 @@
       tm.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-NC9N2HR6';
       document.head.appendChild(tm);
     }
-    if (lire() === 'accepte') charger();
-    return { lire: lire, enregistrer: enregistrer, charger: charger };
+    function purger() {
+      var domaines = ['', '; domain=' + location.hostname, '; domain=.' + location.hostname];
+      document.cookie.split(';').forEach(function (c) {
+        var nom = c.split('=')[0].trim();
+        if (/^_ga/.test(nom) || nom === '_gid' || nom === '_gat') {
+          domaines.forEach(function (d) { document.cookie = nom + '=; Max-Age=0; path=/' + d; });
+        }
+      });
+    }
+    var choix = lire();
+    if (choix === 'accepte') charger();
+    /* Refus : on efface tout cookie Google résiduel. Aucun script Google n'étant
+       chargé ensuite, il ne peut pas être recréé. */
+    else if (choix === 'refuse') purger();
+    return { lire: lire, enregistrer: enregistrer, charger: charger, purger: purger };
   })();
 </script>
 <meta charset="UTF-8" />
@@ -4403,16 +4416,6 @@ document.head.appendChild(_s);
    Le chargement de Google est géré par window.Consentement (début du <head>).
    Ici : affichage du bandeau, enregistrement du choix, retrait du consentement. */
 (function () {
-  function supprimerCookiesGoogle() {
-    var domaines = ['', '; domain=' + location.hostname, '; domain=.' + location.hostname];
-    document.cookie.split(';').forEach(function (c) {
-      var nom = c.split('=')[0].trim();
-      if (/^_ga/.test(nom) || nom === '_gid' || nom === '_gat') {
-        domaines.forEach(function (d) { document.cookie = nom + '=; Max-Age=0; path=/' + d; });
-      }
-    });
-  }
-
   function init() {
     var bandeau = document.getElementById('cookie-banner');
     var C = window.Consentement;
@@ -4427,9 +4430,14 @@ document.head.appendChild(_s);
       var avant = C.lire();
       C.enregistrer('refuse');
       bandeau.hidden = true;
-      /* Retrait d'un accord donné : on efface les cookies et on recharge,
-         pour que les scripts Google déjà chargés ne restent pas actifs. */
-      if (avant === 'accepte') { supprimerCookiesGoogle(); location.reload(); }
+      /* Retrait d'un accord donné : Google Analytics est d'abord figé (drapeau
+         officiel de désactivation), sinon il réécrit son cookie de session pendant
+         le déchargement de la page. Puis on efface et on recharge sans Google. */
+      if (avant === 'accepte') {
+        window['ga-disable-G-EFQQ49CPJT'] = true;
+        C.purger();
+        location.reload();
+      }
     });
 
     /* Lien « Gérer les cookies » du pied de page */

@@ -2482,10 +2482,12 @@ footer {
 }
 
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"/>
-<script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Ressources tierces : l'attribut integrity bloque leur exécution si le fichier servi par le CDN a été modifié.
+     Empreintes vérifiées contre le paquet npm officiel (jsDelivr) et l'API cdnjs. À recalculer en cas de changement de version. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha384-3RT6/aAL0nKpqF8ldMoIrxz8OmRcPrKbR8MYXgvv2iKryEvn2vbfoI+FJbcpl+VW" crossorigin="anonymous"/>
+<script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" integrity="sha384-dUo4VnkPwa5iJ/udOYY1SRDya6+2CVXYRfing32kyXbeB6HePV/YmJ3EPPvYz/Sb" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" integrity="sha384-QCoiowLYPphJpiHouJIJOUCcg6AxqnLAAyEjkZnJ7RQCpC3YY1kEX0PaOant/8kx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -4284,129 +4286,6 @@ function showResult() {
 
   updatePharmacyStatus();
   setInterval(updatePharmacyStatus, 60000);
-})();
-
-/* ═══════════════════════════════════════════
-   FORMULAIRE DE CONTACT — hero
-═══════════════════════════════════════════ */
-(function () {
-  const MAX_SIZE = 20 * 1024 * 1024; // 20 Mo
-  const ALLOWED_EXT = /\.(pdf|jpg|jpeg|png)$/i;
-
-  let selectedFiles = [];
-
-  const dropZone  = document.getElementById('file-drop-zone');
-  const fileInput = document.getElementById('file-input');
-  const fileList  = document.getElementById('file-list');
-  const sizeError = document.getElementById('file-size-error');
-  const errBanner = document.getElementById('form-error-banner');
-  const btnSubmit = document.getElementById('btn-submit-form');
-  const form      = document.getElementById('hero-contact-form');
-  const successEl = document.getElementById('form-success-state');
-
-  if (!form) return;
-
-  /* Drag & Drop */
-  dropZone.addEventListener('click', () => fileInput.click());
-  dropZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') fileInput.click(); });
-  ['dragenter','dragover'].forEach(evt =>
-    dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.add('drag-over'); })
-  );
-  ['dragleave','drop'].forEach(evt =>
-    dropZone.addEventListener(evt, e => { e.preventDefault(); dropZone.classList.remove('drag-over'); })
-  );
-  dropZone.addEventListener('drop', e => addFiles(e.dataTransfer.files));
-  fileInput.addEventListener('change', () => { addFiles(fileInput.files); fileInput.value = ''; });
-
-  function addFiles(raw) {
-    Array.from(raw).forEach(f => {
-      if (!ALLOWED_EXT.test(f.name)) return;
-      if (!selectedFiles.find(x => x.name === f.name && x.size === f.size)) selectedFiles.push(f);
-    });
-    renderFileList();
-  }
-
-  function removeFile(idx) { selectedFiles.splice(idx, 1); renderFileList(); }
-
-  function renderFileList() {
-    const total = selectedFiles.reduce((s, f) => s + f.size, 0);
-    sizeError.style.display = total > MAX_SIZE ? 'block' : 'none';
-    fileList.innerHTML = selectedFiles.map((f, i) => `
-      <div class="file-item">
-        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--teal)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        <span class="file-item-name">${f.name}</span>
-        <span class="file-item-size">${(f.size/1024/1024).toFixed(1)} Mo</span>
-        <button type="button" class="file-item-remove" onclick="removeFileAt(${i})" aria-label="Supprimer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>`).join('');
-  }
-
-  window.removeFileAt = idx => removeFile(idx);
-
-  /* Validation & envoi */
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    hideError();
-
-    const nom    = form.nom.value.trim();
-    const prenom = form.prenom.value.trim();
-    const email  = form.email.value.trim();
-    const type   = form.type_demande.value;
-    const rgpd   = document.getElementById('hf-rgpd').checked;
-
-    if (!nom || !prenom)               return showError('Veuillez renseigner votre nom et prénom.');
-    if (!email || !email.includes('@')) return showError('Veuillez entrer une adresse email valide.');
-    if (!type)                          return showError('Veuillez choisir un type de demande.');
-    if (!rgpd)                          return showError('Veuillez accepter la politique de confidentialité.');
-
-    const total = selectedFiles.reduce((s, f) => s + f.size, 0);
-    if (total > MAX_SIZE)              return showError('La taille totale des pièces jointes dépasse 20 Mo.');
-
-    const fd = new FormData();
-    fd.append('_subject', `[Pharmacie La Biolle] ${type} — ${prenom} ${nom}`);
-    fd.append('_captcha', 'false');
-    fd.append('_template', 'table');
-    fd.append('nom',          nom);
-    fd.append('prenom',       prenom);
-    fd.append('email',        email);
-    fd.append('telephone',    form.telephone.value.trim() || 'Non renseigné');
-    fd.append('type_demande', type);
-    fd.append('message',      form.message.value.trim() || 'Aucun message');
-    selectedFiles.forEach(f => fd.append('attachment', f, f.name));
-
-    btnSubmit.disabled = true;
-    btnSubmit.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Envoi en cours…';
-
-    try {
-      const res  = await fetch('https://formsubmit.co/ajax/pharmaciedelabiolle@gmail.com', {
-        method: 'POST', body: fd, headers: { Accept: 'application/json' }
-      });
-      const data = await res.json();
-      if (data.success === 'true' || data.success === true) {
-        form.style.display = 'none';
-        successEl.style.display = 'flex';
-      } else { throw new Error(); }
-    } catch {
-      showError("Une erreur est survenue. Réessayez ou appelez-nous au 04 79 54 22 49.");
-      btnSubmit.disabled = false;
-      btnSubmit.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Envoyer le message';
-    }
-  });
-
-  function showError(msg) {
-    errBanner.textContent = msg;
-    errBanner.style.display = 'block';
-    errBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-  function hideError() { errBanner.style.display = 'none'; }
-
-  window.resetContactForm = function() {
-    form.reset(); selectedFiles = []; renderFileList();
-    form.style.display = 'block'; successEl.style.display = 'none';
-    btnSubmit.disabled = false;
-    btnSubmit.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Envoyer le message';
-  };
 })();
 
 const _s = document.createElement('style');

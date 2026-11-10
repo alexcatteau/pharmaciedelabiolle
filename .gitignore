@@ -15,15 +15,14 @@ desktop.ini
 # Fichier de test — ne pas publier
 test_js.html
 
-# Documents internes / non destinés à la publication
-promos/App Store Connect.pdf
+# Doublons de fichiers
 *copie*
 
 # Design system (source interne, pas nécessaire en prod)
 pharmacie-de-la-biolle-design-system/
 
-# Serveur local Claude
-.claude/serve.py
+# Configuration locale de Claude Code (aperçu, réglages)
+.claude/
 
 # Espace pro : sources en clair (seul espace-pro/index.html, chiffré, est publié)
 espace-pro-src/

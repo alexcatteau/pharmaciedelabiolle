@@ -1,13 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EFQQ49CPJT"></script>
+<!-- ═══ MESURE D'AUDIENCE — chargée uniquement après consentement ═══
+     Google Analytics et Google Tag Manager ne sont chargés qu'après un clic sur
+     « Accepter » dans le bandeau cookies. Choix conservé 6 mois (recommandation CNIL). -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-EFQQ49CPJT');
+  window.Consentement = (function () {
+    var CLE = 'biolle-cookies';
+    var DUREE = 1000 * 60 * 60 * 24 * 182;   // ≈ 6 mois
+    var charge = false;
+    function lire() {
+      try {
+        var c = JSON.parse(localStorage.getItem(CLE));
+        if (c && (c.choix === 'accepte' || c.choix === 'refuse') && Date.now() - c.date < DUREE) return c.choix;
+      } catch (e) {}
+      return null;
+    }
+    function enregistrer(choix) {
+      try { localStorage.setItem(CLE, JSON.stringify({ choix: choix, date: Date.now() })); } catch (e) {}
+    }
+    function charger() {
+      if (charge) return;
+      charge = true;
+      var ga = document.createElement('script');
+      ga.async = true;
+      ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-EFQQ49CPJT';
+      document.head.appendChild(ga);
+      gtag('js', new Date());
+      gtag('config', 'G-EFQQ49CPJT');
+      dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      var tm = document.createElement('script');
+      tm.async = true;
+      tm.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-NC9N2HR6';
+      document.head.appendChild(tm);
+    }
+    if (lire() === 'accepte') charger();
+    return { lire: lire, enregistrer: enregistrer, charger: charger };
+  })();
 </script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -358,6 +389,43 @@ a:focus-visible, button:focus-visible, input:focus-visible,
 .mobile-call-fab:active { transform: scale(0.96); background: var(--biolle-teal-800); }
 @media (max-width: 768px) {
   .mobile-call-fab { display: inline-flex; }
+}
+
+/* ─── BANDEAU COOKIES ─── */
+/* Au-dessus du bouton d'appel (1200), sous les modales (2300). */
+.cookie-banner {
+  position: fixed; z-index: 1500;
+  left: 16px; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  max-width: 760px; margin: 0 auto;
+  background: var(--biolle-teal-900); color: #fff;
+  border-radius: var(--radius-lg); padding: 1.15rem 1.35rem;
+  box-shadow: 0 18px 50px -12px rgba(0,0,0,.45);
+  animation: cookieIn .35s var(--ease-out);
+}
+.cookie-banner[hidden] { display: none; }
+@keyframes cookieIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.cookie-inner { display: flex; align-items: center; gap: 1.25rem; }
+.cookie-text { flex: 1; min-width: 0; font-size: 0.88rem; line-height: 1.55; color: rgba(255,255,255,.85); }
+.cookie-titre { font-weight: 600; font-size: 0.95rem; color: #fff; margin-bottom: 0.2rem; }
+.cookie-text a { color: var(--biolle-teal-300); text-decoration: underline; text-underline-offset: 2px; }
+.cookie-actions { display: flex; gap: 0.6rem; flex: none; }
+/* Une seule classe pour les deux boutons : refuser est exactement aussi visible qu'accepter. */
+.cookie-btn {
+  font: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+  background: var(--paper); color: var(--biolle-teal-900);
+  border: none; border-radius: var(--radius-pill);
+  padding: 0.65rem 1.25rem; min-width: 7.5rem;
+  transition: background var(--dur-base), transform var(--dur-base);
+}
+.cookie-btn:hover { background: var(--cream-100); transform: translateY(-1px); }
+.cookie-btn:focus-visible { outline: 3px solid var(--biolle-teal-300); outline-offset: 2px; }
+.footer-cookies {
+  font: inherit; color: inherit; background: none; border: none; padding: 0;
+  cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+}
+@media (max-width: 640px) {
+  .cookie-inner { flex-direction: column; align-items: stretch; gap: 0.9rem; }
+  .cookie-actions .cookie-btn { flex: 1; min-width: 0; }
 }
 
 /* ─── SCROLL REVEAL ─── */
@@ -2488,19 +2556,9 @@ footer {
 <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" integrity="sha384-dUo4VnkPwa5iJ/udOYY1SRDya6+2CVXYRfing32kyXbeB6HePV/YmJ3EPPvYz/Sb" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" integrity="sha384-QCoiowLYPphJpiHouJIJOUCcg6AxqnLAAyEjkZnJ7RQCpC3YY1kEX0PaOant/8kx" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NC9N2HR6');</script>
-<!-- End Google Tag Manager -->
+<!-- Google Tag Manager : chargé par window.Consentement, après accord uniquement (voir début du <head>) -->
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NC9N2HR6"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
 <!-- Lien d'évitement (accessibilité clavier) -->
 <a class="skip-link" href="#home">Aller au contenu principal</a>
@@ -3162,7 +3220,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span itemprop="addressLocality">La Biolle</span>
         </span>
       </address>
-      &nbsp;·&nbsp; <a href="/mentions-legales">Mentions légales</a>
+      &nbsp;·&nbsp; <a href="/mentions-legales/">Mentions légales</a>
+      &nbsp;·&nbsp; <button type="button" class="footer-cookies" onclick="gererCookies()">Gérer les cookies</button>
       &nbsp;·&nbsp; <a href="/espace-pro/" rel="nofollow">Espace pro</a>
     </div>
   </div>
@@ -3173,6 +3232,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
   <span>Appeler</span>
 </a>
+
+<!-- ===== BANDEAU COOKIES (consentement mesure d'audience) ===== -->
+<div class="cookie-banner" id="cookie-banner" role="region" aria-labelledby="cookie-titre" hidden>
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      <p class="cookie-titre" id="cookie-titre">Votre vie privée</p>
+      <p>Avec votre accord, nous mesurons la fréquentation du site avec Google Analytics afin de l'améliorer. Refuser ne change rien à votre navigation. <a href="/mentions-legales/#cookies">En savoir plus</a></p>
+    </div>
+    <div class="cookie-actions">
+      <button type="button" class="cookie-btn" id="cookie-refuser">Refuser</button>
+      <button type="button" class="cookie-btn" id="cookie-accepter">Accepter</button>
+    </div>
+  </div>
+</div>
 
 <!-- ===== MODAL RETOUR À DOMICILE (aidants) ===== -->
 <div class="mad-overlay" id="mad-overlay" role="dialog" aria-modal="true" aria-labelledby="mad-modal-title" onclick="if(event.target===this)closeMAD()">
@@ -4324,6 +4397,53 @@ document.head.appendChild(_s);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && overlay.classList.contains('open')) window.closeMSS();
   });
+})();
+
+/* ═══ BANDEAU COOKIES ═══
+   Le chargement de Google est géré par window.Consentement (début du <head>).
+   Ici : affichage du bandeau, enregistrement du choix, retrait du consentement. */
+(function () {
+  function supprimerCookiesGoogle() {
+    var domaines = ['', '; domain=' + location.hostname, '; domain=.' + location.hostname];
+    document.cookie.split(';').forEach(function (c) {
+      var nom = c.split('=')[0].trim();
+      if (/^_ga/.test(nom) || nom === '_gid' || nom === '_gat') {
+        domaines.forEach(function (d) { document.cookie = nom + '=; Max-Age=0; path=/' + d; });
+      }
+    });
+  }
+
+  function init() {
+    var bandeau = document.getElementById('cookie-banner');
+    var C = window.Consentement;
+    if (!bandeau || !C) return;
+
+    document.getElementById('cookie-accepter').addEventListener('click', function () {
+      C.enregistrer('accepte');
+      bandeau.hidden = true;
+      C.charger();
+    });
+    document.getElementById('cookie-refuser').addEventListener('click', function () {
+      var avant = C.lire();
+      C.enregistrer('refuse');
+      bandeau.hidden = true;
+      /* Retrait d'un accord donné : on efface les cookies et on recharge,
+         pour que les scripts Google déjà chargés ne restent pas actifs. */
+      if (avant === 'accepte') { supprimerCookiesGoogle(); location.reload(); }
+    });
+
+    /* Lien « Gérer les cookies » du pied de page */
+    window.gererCookies = function () {
+      bandeau.hidden = false;
+      document.getElementById('cookie-refuser').focus();
+    };
+
+    /* Premier passage, choix expiré (6 mois), ou lien /?cookies depuis une autre page */
+    if (C.lire() === null || /[?&]cookies(=|&|$)/.test(location.search)) bandeau.hidden = false;
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();
 
 /* ═══ BANDEAU SAISONNIER ═══ */
